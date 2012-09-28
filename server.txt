@@ -71,6 +71,8 @@ mkdir /var/www
 chown ubuntu:www-data /var/www
 
 
+# create a test app
+
 
 
 ####### MODIFY #######
