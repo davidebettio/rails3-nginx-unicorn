@@ -1,7 +1,8 @@
-working_directory "/var/www/example"
-pid "/var/www/example/tmp/pids/unicorn.pid"
-stderr_path "/var/www/example/log/unicorn.log"
-stdout_path "/var/www/example/log/unicorn.log"
+root = "/var/www/example"
+working_directory root
+pid "#{root}/tmp/pids/unicorn.pid"
+stderr_path "#{root}/log/unicorn.log"
+stdout_path "#{root}/log/unicorn.log"
 
 listen "/tmp/unicorn.example.sock"
 worker_processes 2

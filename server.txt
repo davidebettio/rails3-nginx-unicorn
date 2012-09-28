@@ -90,6 +90,9 @@ cd example
 echo "gem 'unicorn'" >> Gemfile
 echo "gem 'capistrano'" >> Gemfile
 bundle
+rm public/index.html
+
+
 chmod +x config/unicorn_init.sh
 mkdir tmp/pids
 ./config/unicorn_init.sh

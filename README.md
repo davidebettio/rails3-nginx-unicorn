@@ -1,2 +1,144 @@
 rails3-nginx-unicorn
 ====================
+
+### enter sudo shell
+	sudo -s
+
+### upgrade system
+	apt-get update
+	apt-get -y upgrade
+	apt-get -y install python-software-properties language-pack-en curl git-core build-essential
+
+### install sqlite3 if you want to use it
+	apt-get -y install libsqlite3-dev
+
+### set language for system
+	echo "LC_ALL=en_US.utf8" >> /etc/environment
+
+### add repository
+	add-apt-repository -y ppa:nginx/stable
+	add-apt-repository -y ppa:chris-lea/node.js
+	apt-get update
+
+### nginx
+	apt-get -y install nginx
+
+### nodejs
+	apt-get -y install nodejs npm
+
+### reboot system
+	reboot
+
+### now stay in the deploy user
+
+### rbenv
+	curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+	wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.profile >> ~/.profile
+
+### reload bash and continue with rbenv
+	rbenv bootstrap-ubuntu-12-04
+	rbenv install 1.9.3-p194
+	rbenv global 1.9.3-p194
+	rbenv rehash
+
+### gem
+	wget -O ~/.gemrc https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.gemrc
+
+### reload bash and install rubygems
+	gem install bundler --no-ri --no-rdoc
+
+### rails
+	gem install rails
+
+### unicorn
+	gem install unicorn
+
+### enter sudo shell
+	sudo -s
+
+### backup original nginx.conf and mime.types
+	mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+	mv /etc/nginx/mime.types /etc/nginx/mime.types.orig
+
+### get conf files for nginx
+	wget -O /etc/nginx/mime.types https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/mime.types
+	wget -O /etc/nginx/nginx.conf https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/nginx.conf
+
+### remove default site
+	rm /etc/nginx/sites-enabled/default
+
+### restart nginx
+	service nginx restart
+
+### add ubuntu user to www-data group
+	usermod -a -G www-data ubuntu
+
+### create www folder
+	mkdir /var/www
+
+### change owner of www folder
+	chown ubuntu:www-data /var/www
+
+### create a test app
+	sudo apt-get install libsqlite3-dev
+	wget -O /etc/nginx/sites-available/example.com https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/example.com
+	ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+	service nginx restart
+	
+### exit and return to deploy user
+	cd /var/www
+	rails new example
+	wget -O /var/www/example/config/unicorn.rb https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/unicorn.rb
+	wget -O /var/www/example/config/unicorn_init.sh https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/unicorn_init.sh
+	cd example
+	echo "gem 'unicorn'" >> Gemfile
+	echo "gem 'capistrano'" >> Gemfile
+	bundle
+	rm public/index.html
+
+
+	chmod +x config/unicorn_init.sh
+	mkdir tmp/pids
+	./config/unicorn_init.sh
+
+# TODO:
+
+# config nginx from https://github.com/h5bp/server-configs
+cd /etc/nginx
+wget nginx.conf
+
+# enable example site
+cd /etc/nginx/sites-available
+wget example.com
+cd /etc/nginx
+sudo ln -s /etc/nginx/sites-available/example.com sites-enabled/example.com
+cd
+mkdir www
+cd www
+sudo apt-get install libsqlite3-dev
+rails new example
+cd example
+echo "gem 'unicorn'" >> Gemfile
+echo "gem 'capistrano'" >> Gemfile
+bundle
+
+# wget extra conf
+sudo mv /etc/nginx/conf.d /etc/nginx/conf
+cd /etc/nginx/conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/cache-busting.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/cross-domain-ajax.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/cross-domain-fonts.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/expires.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/h5bp.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/no-transform.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/protect-system-files.conf
+sudo wget https://raw.github.com/h5bp/server-configs/master/nginx/conf/x-ua-compatible.conf
+
+# remove default nginx site
+sudo rm /etc/nginx/sites-enabled/default
+
+# restart nginx
+sudo service nginx restart
+
+
+
