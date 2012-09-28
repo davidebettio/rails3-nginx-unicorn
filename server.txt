@@ -51,6 +51,16 @@ sudo -s
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 mv /etc/nginx/mime.types /etc/nginx/mime.types.orig
 
+# get conf files for nginx
+wget -O /etc/nginx/mime.types https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/mime.types
+
+
+
+
+
+
+####### MODIFY #######
+
 # config nginx from https://github.com/h5bp/server-configs
 cd /etc/nginx
 wget nginx.conf
