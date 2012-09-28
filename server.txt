@@ -6,6 +6,9 @@ apt-get update
 apt-get -y upgrade
 apt-get -y install python-software-properties language-pack-en curl git-core build-essential
 
+# install sqlite3 if you want to use it
+apt-get -y install libsqlite3-dev
+
 # set language for system
 echo "LC_ALL=en_US.utf8" >> /etc/environment
 
@@ -70,10 +73,14 @@ mkdir /var/www
 # change owner of www folder
 chown ubuntu:www-data /var/www
 
-
 # create a test app
-
-
+sudo apt-get install libsqlite3-dev
+wget -O /etc/nginx/sites-available/example.com https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/example.com
+ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+# exit and return to deploy user
+cd /var/www
+rails new example
+cd example
 
 ####### MODIFY #######
 
