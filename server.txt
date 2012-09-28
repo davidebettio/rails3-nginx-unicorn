@@ -47,6 +47,9 @@ gem install bundler --no-ri --no-rdoc
 # rails
 gem install rails
 
+# unicorn
+gem install unicorn
+
 # enter sudo shell
 sudo -s
 
@@ -77,10 +80,19 @@ chown ubuntu:www-data /var/www
 sudo apt-get install libsqlite3-dev
 wget -O /etc/nginx/sites-available/example.com https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/example.com
 ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+service nginx restart
 # exit and return to deploy user
 cd /var/www
 rails new example
+wget -O /var/www/example/config/unicorn.rb https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/unicorn.rb
+wget -O /var/www/example/config/unicorn_init.sh https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/unicorn_init.sh
 cd example
+echo "gem 'unicorn'" >> Gemfile
+echo "gem 'capistrano'" >> Gemfile
+bundle
+chmod +x config/unicorn_init.sh
+mkdir tmp/pids
+./config/unicorn_init.sh
 
 ####### MODIFY #######
 
