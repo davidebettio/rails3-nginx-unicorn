@@ -27,7 +27,7 @@ sudo -s
 
 # rbenv
 curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
-
+wget https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.bash_profile
 #
 
 
