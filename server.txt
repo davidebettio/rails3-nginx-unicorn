@@ -1,21 +1,37 @@
 
 sudo -s
-apt-get update
-apt-get upgrade
-apt-get install language-pack-en
-add-apt-repository ppa:nginx/stable
-apt-get update
-apt-get -y install curl git-core python-software-properties build-essential
-# Extras for RubyGems and Rails:
-apt-get -y install zlib1g-dev libssl-dev
-# Readline Dev on Ubuntu 12.04 LTS:
-apt-get -y install libreadline-gplv2-dev
-# Nginx
-apt-get -y install nginx
-sudo reboot
 
-#re-enter
-cd
+# upgrade system
+apt-get update
+apt-get -y upgrade
+apt-get -y install python-software-properties language-pack-en curl git-core build-essential
+
+# add repository
+add-apt-repository -y ppa:nginx/stable
+add-apt-repository -y ppa:chris-lea/node.js
+apt-get update
+
+# nginx
+apt-get -y install nginx
+
+# extras for rubygems and rails
+apt-get -y install zlib1g-dev libssl-dev
+
+# readline dev
+apt-get -y install libreadline-gplv2-dev
+
+# reboot system
+reboot
+
+sudo -s
+
+# rbenv
+curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+
+#
+
+
+# rbenv installer (https://github.com/fesplugas/rbenv-installer)
 git clone git://github.com/sstephenson/rbenv.git .rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
 echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
@@ -51,7 +67,6 @@ cd
 gem install rails
 
 # nodejs
-sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs npm
 
