@@ -53,8 +53,22 @@ mv /etc/nginx/mime.types /etc/nginx/mime.types.orig
 
 # get conf files for nginx
 wget -O /etc/nginx/mime.types https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/mime.types
+wget -O /etc/nginx/nginx.conf https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/nginx.conf
 
+# remove default site
+rm /etc/nginx/sites-enabled/default
 
+# restart nginx
+service nginx restart
+
+# add ubuntu user to www-data group
+usermod -a -G www-data ubuntu
+
+# create www folder
+mkdir /var/www
+
+# change owner of www folder
+chown ubuntu:www-data /var/www
 
 
 
