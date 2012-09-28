@@ -1,10 +1,13 @@
-
+# enter sudo shell
 sudo -s
 
 # upgrade system
 apt-get update
 apt-get -y upgrade
 apt-get -y install python-software-properties language-pack-en curl git-core build-essential
+
+# set language for system
+echo "LC_ALL=en_US.utf8" >> /etc/environment
 
 # add repository
 add-apt-repository -y ppa:nginx/stable
@@ -14,65 +17,39 @@ apt-get update
 # nginx
 apt-get -y install nginx
 
-# extras for rubygems and rails
-apt-get -y install zlib1g-dev libssl-dev
-
-# readline dev
-apt-get -y install libreadline-gplv2-dev
+# nodejs
+apt-get -y install nodejs npm
 
 # reboot system
 reboot
 
-sudo -s
+# now stay in the deploy user
 
 # rbenv
 curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
-wget https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.bash_profile
-#
+wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.profile >> ~/.profile
 
-
-# rbenv installer (https://github.com/fesplugas/rbenv-installer)
-git clone git://github.com/sstephenson/rbenv.git .rbenv
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-exec $SHELL
-
-cd
-wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz
-tar -xzf ruby-1.9.3-p194.tar.gz
-rm ruby-1.9.3-p194.tar.gz
-cd ruby-1.9.3-p194
-./configure --prefix=$HOME/.rbenv/versions/1.9.3-p194
-make
-make install
-cd
-rm -rf ruby-1.9.3-p194
-
-mkdir -p ~/.rbenv/plugins
-cd ~/.rbenv/plugins
-git clone git://github.com/sstephenson/ruby-build.git
-exit
-#re-enter
+# reload bash and continue with rbenv
+rbenv bootstrap-ubuntu-12-04
 rbenv install 1.9.3-p194
 rbenv global 1.9.3-p194
-gem install bundler --no-ri --no-rdoc
 rbenv rehash
 
 # gem
-cd
-wget .gemrc
+wget -O ~/.gemrc https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.gemrc
+
+# reload bash and install rubygems
+gem install bundler --no-ri --no-rdoc
 
 # rails
-cd
 gem install rails
 
-# nodejs
-sudo apt-get update
-sudo apt-get install nodejs npm
+# enter sudo shell
+sudo -s
 
 # backup original nginx.conf and mime.types
-sudo mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-sudo mv /etc/nginx/mime.types /etc/nginx/mime.types.orig
+mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+mv /etc/nginx/mime.types /etc/nginx/mime.types.orig
 
 # config nginx from https://github.com/h5bp/server-configs
 cd /etc/nginx
