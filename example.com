@@ -1,5 +1,5 @@
 upstream unicorn {
-  server unix:/tmp/unicorn.todo.sock fail_timeout=0;
+  server unix:/tmp/unicorn.example.sock fail_timeout=0;
 }
 
 server {
