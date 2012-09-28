@@ -33,19 +33,24 @@ rails3-nginx-unicorn
 
 ### rbenv
 	curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
-	wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.profile >> ~/.profile
 
-### reload bash and continue with rbenv
+### put lines from
+	wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.bashrc
+
+### in your .bashrc before
+	# If not running interactively, don't do anything
+	[ -z "$PS1" ] && return
+### and reload bash
+	source .bashrc
+
+### install and set ruby version
+
 	rbenv bootstrap-ubuntu-12-04
 	rbenv install 1.9.3-p194
 	rbenv global 1.9.3-p194
-	rbenv rehash
-
-### gem
 	wget -O ~/.gemrc https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.gemrc
-
-### reload bash and install rubygems
 	gem install bundler --no-ri --no-rdoc
+	rbenv rehash
 
 ### rails
 	gem install rails
@@ -84,7 +89,7 @@ rails3-nginx-unicorn
 	wget -O /etc/nginx/sites-available/example.com https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/example.com
 	ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
 	service nginx restart
-	
+
 ### exit and return to deploy user
 	cd /var/www
 	rails new example
