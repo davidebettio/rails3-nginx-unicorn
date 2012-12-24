@@ -30,7 +30,7 @@ reboot
 
 # rbenv
 curl -L https://raw.github.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
-wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.profile >> ~/.profile
+wget -O - https://raw.github.com/davidebettio/rails3-nginx-unicorn/master/.bashrc >> ~/.profile
 
 # reload bash and continue with rbenv
 rbenv bootstrap-ubuntu-12-04
